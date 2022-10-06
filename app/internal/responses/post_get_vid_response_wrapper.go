@@ -7,5 +7,5 @@ import "github.com/aditya109/animated-eureka/internal/models"
 type PostGetVidResponseWrapper struct {
 	// All the details for virtual bond id
 	// in: virtualbond
-	VirtualBond models.VirtualBond
+	VirtualBond models.VirtualBond `json:"virtual_bond"`
 }

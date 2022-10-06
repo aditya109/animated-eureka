@@ -1,21 +1,25 @@
 package handlers
 
 import (
+	"context"
+    "database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/aditya109/animated-eureka/internal/models"
+	"github.com/aditya109/animated-eureka/internal/requests"
 	"github.com/aditya109/animated-eureka/internal/responses"
-	resp "github.com/aditya109/animated-eureka/internal/responses"
 	svc "github.com/aditya109/animated-eureka/internal/services"
+	_ "github.com/go-sql-driver/mysql"
 	logger "github.com/sirupsen/logrus"
 )
 
 // WelcomeHandler returns welcome message for home URL
 func WelcomeHandler(w http.ResponseWriter, r *http.Request) {
 	responseStatusCode := 200
-	var response resp.WelcomeResponseWrapper = "OK"
+	var response responses.WelcomeResponseWrapper = "OK"
 	w.WriteHeader(responseStatusCode)
 	w.Write([]byte(response))
 	logger.Info(fmt.Sprintf("STATUS: %d === / route was hit", responseStatusCode))
@@ -42,7 +46,7 @@ func GetItemsHandler(w http.ResponseWriter, r *http.Request) {
 
 // PostVirtualBondHandler returns all the details of the virtual bond created, provided a valid request body is provided.
 func PostVirtualBondHandler(w http.ResponseWriter, r *http.Request) {
-	var m responses.PostGetVidResponseWrapper = resp.PostGetVidResponseWrapper{
+	var m responses.PostGetVidResponseWrapper = responses.PostGetVidResponseWrapper{
 		VirtualBond: models.VirtualBond{
 			VirtualBondId: "028dd2df5592459f8a5700bb0ce809ef",
 			UID:           "32c335b4-ca07-4b12-8370-720a488f9ecc",
@@ -65,4 +69,22 @@ func PostVirtualBondHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(responseStatusCode)
 	json.NewEncoder(w).Encode(m)
 	logger.Info(fmt.Sprintf("STATUS: %d === /items route was hit", responseStatusCode))
+}
+
+// PostBulkVirtualBondsHandler returns all the details of the virtual bond created, provided a valid request body is provided.
+func PostBulkVirtualBondsHandler(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	var request requests.PostBulkVirtualBondsRequestWrapper
+	err := decoder.Decode(&request)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// TODO: add additional check for in-flight request body
+	query := ""
+	var responseStatusCode int
+
+	w.Header().Set("Content-Type", "application/json")
+	responseStatusCode = http.StatusOK
+	w.WriteHeader(responseStatusCode)
+	logger.Info(fmt.Sprintf("STATUS: %d === /bulkvirtualbonds route was hit", responseStatusCode))
 }

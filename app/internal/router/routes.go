@@ -32,7 +32,7 @@ var routeList = routes{
 		nil,
 	},
 
-	// swagger:route GET /docs docs swaggerDocumentation
+	// swagger:route GET /docs docs docs
 	// Returns swagger specification uunder OpenAPIv3 documeted APIs
 	Route{
 		"swaggerDocumentation",
@@ -53,15 +53,27 @@ var routeList = routes{
 	},
 
 
-	// swagger:route POST /virtualbond items listItems
-	// Returns a virtual id, with corresponding a-faction-id, b-faction-id, uid, bond-end-time
+	// swagger:route POST /virtualbond virtualBond virtualbond
+	// Returns a virtual bond id, with corresponding a-faction-id, b-faction-id, uid, bond-end-time
 	// responses:
-	// 	200: GetItemsResponse
+	// 	200: PostGetVidResponse
 	Route{
 		"PostVirtualBond",
 		"POST",
 		"/virtualbond",
 		h.PostVirtualBondHandler,
+		nil,
+	},
+
+	// swagger:route POST /bulkvirtualbonds addBulkVirtualBond bulkvirtualbonds
+	// Uploads bulk of virtual bonds in available_virtual_bond table
+	// responses:
+	// 	200: PostBulkVirtualBondsResponse
+	Route{
+		"PostBulkVirtualBonds",
+		"POST",
+		"/bulkvirtualbonds",
+		h.PostBulkVirtualBondsHandler,
 		nil,
 	},
 }

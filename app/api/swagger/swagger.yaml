@@ -1,78 +1,69 @@
-definitions:
-  Item:
-    description: Item defines the structure of an API item
-    properties:
-      ID:
-        format: int64
-        type: integer
-      Name:
-        type: string
-    type: object
-    x-go-package: github.com/aditya109/animated-eureka/internal/models
 info: {}
 paths:
-  /:
-    get:
-      description: Returns a welcome message
-      operationId: welcome
-      responses:
-        "200":
-          $ref: '#/responses/WelcomeResponse'
-      tags:
-      - home
-  /docs:
-    get:
-      description: Returns swagger specification uunder OpenAPIv3 documeted APIs
-      operationId: swaggerDocumentation
-      tags:
-      - docs
-  /item:
-    get:
-      description: Returns items filtered by query parameters from the existing list
-        of items
-      operationId: listFilteredItems
-      responses:
-        "200":
-          $ref: '#/responses/GetWithQueryParamsReponse'
-      tags:
-      - item
-  /item/{id}:
-    get:
-      description: Returns an item with id from the existing list of items
-      operationId: listItemById
-      responses:
-        "200":
-          $ref: '#/responses/GetItemWithIdReponse'
-      tags:
-      - item
-  /items:
-    get:
-      description: Returns a list of items, no query params required
-      operationId: listItems
-      responses:
-        "200":
-          $ref: '#/responses/GetItemsResponse'
-      tags:
-      - items
+    /:
+        get:
+            description: Returns a welcome message
+            operationId: welcome
+            responses:
+                "200":
+                    $ref: '#/responses/WelcomeResponse'
+            tags:
+                - home
+    /bulkvirtualbonds:
+        post:
+            description: Uploads bulk of virtual bonds in available_virtual_bond table
+            operationId: bulkvirtualbonds
+            responses:
+                "200":
+                    $ref: '#/responses/PostBulkVirtualBondsResponse'
+            tags:
+                - addBulkVirtualBond
+    /docs:
+        get:
+            description: Returns swagger specification uunder OpenAPIv3 documeted APIs
+            operationId: docs
+            tags:
+                - docs
+    /virtualbond:
+        post:
+            description: Returns a virtual bond id, with corresponding a-faction-id, b-faction-id, uid, bond-end-time
+            operationId: virtualbond
+            responses:
+                "200":
+                    $ref: '#/responses/PostGetVidResponse'
+            tags:
+                - virtualBond
 responses:
-  GetItemWithIdResponse:
-    description: GetItemWithIDResponseWrapper is an item returned in response
-    schema:
-      $ref: '#/definitions/Item'
-  GetItemWithQueryParamResponse:
-    description: GetItemWithQueryParamResponseWrapper is an item returned in response
-    schema:
-      items:
-        $ref: '#/definitions/Item'
-      type: array
-  GetItemsResponse:
-    description: GetItemsResponseWrapper is a list of items returned in the response
-    schema:
-      items:
-        $ref: '#/definitions/Item'
-      type: array
-  WelcomeResponse:
-    description: WelcomeResponseWrapper is a welcome response shown on / URL
-    schema:
-      type: string
+    GetItemWithIdResponse:
+        description: GetItemWithIDResponseWrapper is an item returned in response
+    GetItemWithQueryParamResponse:
+        description: GetItemWithQueryParamResponseWrapper is an item returned in response
+        schema:
+            items: {}
+            type: array
+    GetItemsResponse:
+        description: GetItemsResponseWrapper is a list of items returned in the response
+        schema:
+            items: {}
+            type: array
+    PostBulkVirtualBondsResponse:
+        description: PostBulkVirtualBondsResponseWrapper contains all the details of the virtualbond returned in the response
+        headers:
+            Error:
+                type: string
+            Status:
+                description: |-
+                    All the details for virtual bond id
+                    in: virtualbond
+                type: string
+    PostGetVidResponse:
+        description: PostGetVidResponseWrapper contains all the details of the virtualbond returned in the response
+        headers:
+            virtual_bond:
+                description: |-
+                    All the details for virtual bond id
+                    in: virtualbond
+    WelcomeResponse:
+        description: WelcomeResponseWrapper is a welcome response shown on / URL
+        schema: {}
 swagger: "2.0"
