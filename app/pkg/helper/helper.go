@@ -44,3 +44,8 @@ func GetFormattedFileName(location models.PersistenceLocation) (string, error) {
 	var logFileName = fmt.Sprintf("%s/%s_%s%s", location.ContainerDirectory, location.TargetFileName[0], timeStamp, location.TargetFileExtension)
 	return logFileName, nil
 }
+
+func GetFormattedConnectionStringFromDatabaseConfig(dbConfig models.DatabaseConfig) string {
+	return fmt.Sprintf("%s:%s@tcp(%s)/%s", dbConfig.Username, dbConfig.Password, dbConfig.Host, dbConfig.Database)
+}
+

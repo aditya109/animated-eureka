@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"context"
-    "database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -80,7 +78,7 @@ func PostBulkVirtualBondsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	// TODO: add additional check for in-flight request body
-	query := ""
+
 	var responseStatusCode int
 
 	w.Header().Set("Content-Type", "application/json")

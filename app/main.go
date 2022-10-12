@@ -1,12 +1,15 @@
 package main
 
 import (
+	"log"
 	"path/filepath"
 	"runtime"
 	"strings"
 
+	"github.com/aditya109/animated-eureka/internal/middlewares/db"
 	"github.com/aditya109/animated-eureka/internal/server"
 	cfg "github.com/aditya109/animated-eureka/pkg/config"
+	"github.com/aditya109/animated-eureka/pkg/helper"
 	logCfg "github.com/aditya109/animated-eureka/pkg/logger"
 	logger "github.com/sirupsen/logrus"
 )
@@ -33,6 +36,14 @@ func main() {
 		logger.Fatal(err)
 	}
 	logCfg.InitializeLogging(config) // initializing logger
-	server.Start(config)
 
+	// starting database connection
+	databaseConnectionString := helper.GetFormattedConnectionStringFromDatabaseConfig(config.DatabaseConfig)
+	err = db.EstablishConnectionToDatabase(config.DatabaseConfig.DriverName, databaseConnectionString)
+	if err != nil {
+		log.Fatal("Error in connecting to database")
+	}
+
+	server.InitializeServerConfiguration(&config.ServerConfig)
+	server.Start()
 }

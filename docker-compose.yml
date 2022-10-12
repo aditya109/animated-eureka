@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: db.Dockerfile
     environment:
-      MYSQL_DATABASE: 'animated_eureka_database'
+      MYSQL_DATABASE: 'aedb'
       MYSQL_PASSWORD: 'Destro333'
       MYSQL_ROOT_PASSWORD: 'Destro333'
     ports:
@@ -30,3 +30,4 @@ services:
 volumes:
   animated_eureka_database:
     external: false
+    name: aedb
