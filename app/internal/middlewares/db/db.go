@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	logger "github.com/sirupsen/logrus"
@@ -16,6 +17,9 @@ func EstablishConnectionToDatabase(driver string, connectionString string) error
 		logger.Error("error while establishing connection to db", err)
 		return err
 	}
+	DB.SetMaxOpenConns(20)
+	DB.SetMaxIdleConns(20)
+	DB.SetConnMaxLifetime(time.Minute * 5)
 	logger.Info("connection to database established.")
 	return nil
 }

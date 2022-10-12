@@ -6,9 +6,11 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/aditya109/animated-eureka/internal/middlewares/db"
 	"github.com/aditya109/animated-eureka/internal/models"
 	"github.com/aditya109/animated-eureka/internal/requests"
 	"github.com/aditya109/animated-eureka/internal/responses"
+	"github.com/aditya109/animated-eureka/internal/services"
 	svc "github.com/aditya109/animated-eureka/internal/services"
 	_ "github.com/go-sql-driver/mysql"
 	logger "github.com/sirupsen/logrus"
@@ -77,12 +79,15 @@ func PostBulkVirtualBondsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// TODO: add additional check for in-flight request body
-
+	err = services.InsertBulkVirtualBonds(db.DB, request.VirtualBondCount)
+	if err != nil {
+		logger.Error("error while inserting bulk virtual bonds", err)
+	}
 	var responseStatusCode int
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "text/plain")
 	responseStatusCode = http.StatusOK
 	w.WriteHeader(responseStatusCode)
+	w.Write([]byte(fmt.Sprintf("%d virtual_bonds got bulk inserted", request.VirtualBondCount)))
 	logger.Info(fmt.Sprintf("STATUS: %d === /bulkvirtualbonds route was hit", responseStatusCode))
 }

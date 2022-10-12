@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	configuration models.ServerConfig
+	configuration *models.ServerConfig
 	httpPort      string
 	prefix        string
 	endpoint      string
@@ -17,6 +17,7 @@ var (
 )
 
 func InitializeServerConfiguration(config *models.ServerConfig) {
+	configuration = config
 	setHTTPPortFromConfigObject() // getting http port from config
 	setEndpointFromConfigObject() // getting endpoint from config
 	setTimeoutsFromConfigObject() // getting timeouts from config
